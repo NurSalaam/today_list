@@ -9,8 +9,9 @@ class TodayItemRepository {
   // Setup Singleton
   static final TodayItemRepository _instance = TodayItemRepository._internal();
   factory TodayItemRepository() => _instance;
-  TodayItemRepository._internal();
-
+  TodayItemRepository._internal() {
+    _initializeItemsController();
+  }
   // fetchAllTodayItems
   Future<List<TodayItem>> fetchAllTodayItems() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -23,27 +24,16 @@ class TodayItemRepository {
     return itemsJson.map((itemJson) => TodayItem.fromJson(itemJson)).toList();
   }
 
-  // fetchIncompleteTodayItems
-  Future<List<TodayItem>> fetchIncompleteTodayItems() async {
-    List<TodayItem> allItems = await fetchAllTodayItems();
-    return allItems.where((item) => !item.isCompleted).toList();
-  }
-
-  // fetchCompleteTodayItems
-  Future<List<TodayItem>> fetchCompleteTodayItems() async {
-    List<TodayItem> allItems = await fetchAllTodayItems();
-    return allItems.where((item) => item.isCompleted).toList();
-  }
-
   // addTodayItem
   Future<void> addTodayItem(TodayItem item) async {
-    print('addTodayItem: $item');
     List<TodayItem> allItems = await fetchAllTodayItems();
     allItems.add(item);
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> itemsJson = allItems.map((item) => item.toJson()).toList();
     await prefs.setStringList(kTodayItemKey, itemsJson);
+    // * STREEEEEAAAAMMMSSS
+    _updateItemsController();
   }
 
   // editTodayItem
@@ -57,8 +47,47 @@ class TodayItemRepository {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       List<String> itemsJson = allItems.map((item) => item.toJson()).toList();
       await prefs.setStringList(kTodayItemKey, itemsJson);
+      // * STREEEEEAAAAMMMSSS
+      _updateItemsController();
     } else {
       throw Exception('Item not found');
     }
+  }
+
+  //* STREEEEEAAAAAMMMMMSSS
+  // today_item_repository.dart
+
+  // StreamController
+  final StreamController<List<TodayItem>> _itemsController =
+      StreamController.broadcast();
+  Stream<List<TodayItem>> get itemsStream => _itemsController.stream;
+
+  Future<void> _initializeItemsController() async {
+    List<TodayItem> allItems = await fetchAllTodayItems();
+    allItems.sort((a, b) => a.id.compareTo(b.id)); // Sort items by id
+    _itemsController.add(allItems);
+  }
+
+  Future<void> _updateItemsController() async {
+    List<TodayItem> allItems = await fetchAllTodayItems();
+    allItems.sort((a, b) => a.id.compareTo(b.id)); // Sort items by id
+    _itemsController.add(allItems);
+  }
+
+  Stream<List<TodayItem>> streamAllTodayItems() async* {
+    while (true) {
+      await Future.delayed(const Duration(
+          seconds: 1)); // Adjust the duration according to your needs
+      yield await fetchAllTodayItems();
+    }
+  }
+
+  Future<void> clearAllItems() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs
+        .setStringList(kTodayItemKey, []); // Set an empty list to kTodayItemKey
+
+    // Clear the repository
+    _itemsController.add([]);
   }
 }

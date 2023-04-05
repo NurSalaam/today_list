@@ -11,19 +11,17 @@ class TodayListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: Future.wait([
-        TodayItemRepository().fetchIncompleteTodayItems(),
-        TodayItemRepository().fetchCompleteTodayItems()
-      ]),
-      builder: (BuildContext context,
-          AsyncSnapshot<List<List<TodayItem>>> snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
+    return StreamBuilder<List<TodayItem>>(
+      stream: TodayItemRepository().itemsStream,
+      builder: (BuildContext context, AsyncSnapshot<List<TodayItem>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.active) {
           if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           }
-          final List<TodayItem> incompleteList = snapshot.data?[0] ?? [];
-          final List<TodayItem> completedList = snapshot.data?[1] ?? [];
+          final List<TodayItem> incompleteList =
+              snapshot.data?.where((item) => !item.isCompleted).toList() ?? [];
+          final List<TodayItem> completedList =
+              snapshot.data?.where((item) => item.isCompleted).toList() ?? [];
 
           return Scaffold(
             body: CustomScrollView(
@@ -49,7 +47,7 @@ class TodayListScreen extends StatelessWidget {
                       (context, index) {
                         if (index.isEven) {
                           return TodayCard(
-                              text: incompleteList[index ~/ 2].text);
+                              todayItem: incompleteList[index ~/ 2]);
                         }
                         return const Divider(height: 1, thickness: 1);
                       },
@@ -75,8 +73,8 @@ class TodayListScreen extends StatelessWidget {
                       (context, index) {
                         if (index.isEven) {
                           return TodayCard(
-                              text: completedList[index ~/ 2].text,
-                              completed: true);
+                            todayItem: completedList[index ~/ 2],
+                          );
                         }
                         return const Divider(height: 1, thickness: 1);
                       },
