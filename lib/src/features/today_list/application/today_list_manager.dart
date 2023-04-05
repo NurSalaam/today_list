@@ -1,6 +1,8 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:today_list/src/features/today_list/data/today_item_repository.dart';
 
+import '../domain/today_item.dart';
+
 class TodayListManager {
   // Singleton instance
   static final TodayListManager _instance = TodayListManager._internal();
@@ -11,6 +13,7 @@ class TodayListManager {
 
   TodayListManager._internal() {
     _loadLastCheckedDate();
+    _saveFirstOpenDate();
     _setupPeriodicCheck();
   }
 
@@ -39,7 +42,7 @@ class TodayListManager {
     });
   }
 
-  void _periodicCheck() {
+  void _periodicCheck() async {
     DateTime now = DateTime.now();
     if (now.day != _lastCheckedDate.day ||
         now.month != _lastCheckedDate.month ||
@@ -47,10 +50,37 @@ class TodayListManager {
       _clearTodays();
       _lastCheckedDate = now;
       _saveLastCheckedDate();
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      DateTime firstOpenDate = DateTime.fromMillisecondsSinceEpoch(
+          prefs.getInt('firstOpenDate') ??
+              DateTime.now().millisecondsSinceEpoch);
+
+      int dayOfMonth = firstOpenDate.day > 28 ? 1 : firstOpenDate.day;
+
+      // Add the monthly item based on the user's first open date
+      if (now.day == dayOfMonth) {
+        _addMonthlyItem(now);
+      }
     }
   }
 
   void _clearTodays() {
     TodayItemRepository().clearAllItems();
+  }
+
+  Future<void> _saveFirstOpenDate() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey('firstOpenDate')) {
+      await prefs.setInt(
+          'firstOpenDate', DateTime.now().millisecondsSinceEpoch);
+    }
+  }
+
+  void _addMonthlyItem(DateTime now) async {
+    String monthlyItemText =
+        "Buy my dev a coffee ☕️✌️ | https://www.buymeacoffee.com/nusa"; // Customize the text
+    TodayItem monthlyItem = TodayItem(text: monthlyItemText, dateCreated: now);
+    await TodayItemRepository().addTodayItem(monthlyItem);
   }
 }
