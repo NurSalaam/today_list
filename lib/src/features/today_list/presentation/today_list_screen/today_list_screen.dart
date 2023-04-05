@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:today_list/src/features/today_list/data/fake_today_item_repository.dart';
+import 'package:today_list/src/features/today_list/presentation/today_list_screen/add_today_item_dialog.dart';
 import 'package:today_list/src/features/today_list/presentation/today_list_screen/custom_app_bar.dart';
 import 'package:today_list/src/features/today_list/presentation/today_list_screen/today_card.dart';
 
@@ -24,7 +25,9 @@ class TodayListScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 16, top: 16),
                   child: Text(
-                    incompleteList.isNotEmpty ? 'Do' : 'Glorious...',
+                    incompleteList.isNotEmpty
+                        ? 'Do'
+                        : 'Absolutely wonderful...',
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
                 ),
@@ -75,7 +78,7 @@ class TodayListScreen extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
-            _showAddTodayItemDialog(context);
+            showAddTodayItemDialog(context);
           },
           label: const Icon(Icons.add),
           shape: RoundedRectangleBorder(
@@ -83,69 +86,4 @@ class TodayListScreen extends StatelessWidget {
           ),
         ));
   }
-}
-
-Future<void> _showAddTodayItemDialog(BuildContext context) async {
-  await showModalBottomSheet(
-    context: context,
-    isScrollControlled: true,
-    backgroundColor: Colors.transparent,
-    builder: (BuildContext context) {
-      double textFieldWidth = MediaQuery.of(context).size.width -
-          32; // 32 is the sum of left and right padding
-
-      return Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
-        ),
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: textFieldWidth,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: TextFormField(
-                autofocus: true,
-                keyboardType: TextInputType.text,
-                decoration: const InputDecoration(
-                  hintText: "You sure this is necessary...?",
-                  contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                  border: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              width: textFieldWidth,
-              height: 50,
-              child: TextButton(
-                onPressed: () {
-                  // Handle button press logic
-                },
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-                child: const Text("Add ToDay"),
-              ),
-            ),
-          ],
-        ),
-      );
-    },
-  );
 }

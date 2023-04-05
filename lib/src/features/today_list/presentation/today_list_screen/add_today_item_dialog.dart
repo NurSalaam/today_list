@@ -1,89 +1,19 @@
 import 'package:flutter/material.dart';
 
-class AddTodayItemDialog extends StatefulWidget {
-  const AddTodayItemDialog({Key? key}) : super(key: key);
-
-  @override
-  // ignore: library_private_types_in_public_api
-  _AddTodayItemDialogState createState() => _AddTodayItemDialogState();
-}
-
-class _AddTodayItemDialogState extends State<AddTodayItemDialog> {
-  final TextEditingController _textEditingController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    _textEditingController.text = 'You sure this is necessary...?';
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _textEditingController.selection = TextSelection.fromPosition(
-        TextPosition(offset: _textEditingController.text.length),
-      );
-      FocusScope.of(context).requestFocus(FocusNode());
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: MediaQuery.of(context).viewInsets,
-      child: Material(
-        elevation: 24,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(16),
-            topRight: Radius.circular(16),
-          ),
-        ),
-        child: Container(
-          color: Colors.white,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(16),
-                child: Text(
-                  'Add Today Item',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-              TextField(
-                autofocus: true,
-                controller: _textEditingController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  contentPadding: const EdgeInsets.all(16),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context, _textEditingController.text);
-                  },
-                  child: const Text('Save'),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-Future<void> _showAddTodayItemDialog(BuildContext context) async {
+Future<void> showAddTodayItemDialog(BuildContext context) async {
   await showModalBottomSheet(
     context: context,
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
     builder: (BuildContext context) {
+      double textFieldWidth = MediaQuery.of(context).size.width -
+          32; // 32 is the sum of left and right padding
+
+      void handleAddTodayItem() {
+        // TODO: Handle add to list logic
+        Navigator.pop(context);
+      }
+
       return Container(
         decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
@@ -92,24 +22,57 @@ Future<void> _showAddTodayItemDialog(BuildContext context) async {
             topRight: Radius.circular(20),
           ),
         ),
-        padding: const EdgeInsets.all(16),
-        child: TextFormField(
-          autofocus: true,
-          keyboardType: TextInputType.text,
-          initialValue: "You sure this is necessary...?",
-          decoration: InputDecoration(
-            hintText: "You sure this is necessary...?",
-            fillColor: Colors.white,
-            filled: true,
-            contentPadding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide.none,
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-              borderSide: const BorderSide(color: Colors.grey),
-            ),
+        padding: EdgeInsets.only(
+          left: 16,
+          top: 16,
+          right: 16,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: textFieldWidth,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: TextFormField(
+                  autofocus: true,
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.done,
+                  onFieldSubmitted: (value) => handleAddTodayItem(),
+                  decoration: const InputDecoration(
+                    hintText: "You sure this is necessary...?",
+                    contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              SizedBox(
+                width: textFieldWidth,
+                child: TextButton(
+                  onPressed: () {
+                    // TODO: Handle button press logic
+                    // ! Remeber you cant add blanck to dos
+                    Navigator.of(context).pop();
+                  },
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Theme.of(context).colorScheme.secondary,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12, horizontal: 24),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                  child: const Text("Add ToDay"),
+                ),
+              ),
+            ],
           ),
         ),
       );

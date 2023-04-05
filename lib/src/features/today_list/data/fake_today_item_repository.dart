@@ -7,10 +7,6 @@ class FakeTodayItemRepository {
 
   final List<TodayItem> _todayItems = kTodayItems;
 
-  List<TodayItem> getTodayItems() {
-    return _todayItems;
-  }
-
   List<TodayItem> getCompleteItems() {
     return _todayItems.where((item) => item.isCompleted).toList();
   }
@@ -19,11 +15,20 @@ class FakeTodayItemRepository {
     return _todayItems.where((item) => !item.isCompleted).toList();
   }
 
-  Future<List<TodayItem>> fetchTodayItems() {
-    return Future.value(_todayItems);
+  Future<List<TodayItem>> fetchCompleteItems() async {
+    return Future.value(_todayItems.where((item) => item.isCompleted).toList());
   }
 
-  Stream<List<TodayItem>> watchTodayItems() {
-    return Stream.value(_todayItems);
+  Future<List<TodayItem>> fetchIncompleteItems() async {
+    return Future.value(
+        _todayItems.where((item) => !item.isCompleted).toList());
   }
+
+  void clearItems() {
+    _todayItems.clear();
+  }
+
+  // Stream<List<TodayItem>> watchTodayItems() {
+  //   return Stream.value(_todayItems);
+  // }
 }

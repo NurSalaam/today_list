@@ -7,7 +7,7 @@ final kTodayItems = [
   TodayItem(text: "Read Iliad", dateCreated: DateTime.now()),
   TodayItem(
       text: "Read invest Cape Town Textiles", dateCreated: DateTime.now()),
-  TodayItem(text: "Read NDP", dateCreated: DateTime.now()),
+  TodayItem(text: "Buy your dev a coffee 😁", dateCreated: DateTime.now()),
   TodayItem(
       text: "Finish ToDay List App",
       dateCreated: DateTime.now(),
