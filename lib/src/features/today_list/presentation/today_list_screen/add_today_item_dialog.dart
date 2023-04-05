@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../data/today_item_repository.dart';
+import '../../domain/today_item.dart';
+
 Future<void> showAddTodayItemDialog(BuildContext context) async {
+  final TextEditingController textController = TextEditingController();
+
   await showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -8,11 +13,6 @@ Future<void> showAddTodayItemDialog(BuildContext context) async {
     builder: (BuildContext context) {
       double textFieldWidth = MediaQuery.of(context).size.width -
           32; // 32 is the sum of left and right padding
-
-      void handleAddTodayItem() {
-        // TODO: Handle add to list logic
-        Navigator.pop(context);
-      }
 
       return Container(
         decoration: BoxDecoration(
@@ -39,10 +39,20 @@ Future<void> showAddTodayItemDialog(BuildContext context) async {
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: TextFormField(
+                  controller: textController,
                   autofocus: true,
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.done,
-                  onFieldSubmitted: (value) => handleAddTodayItem(),
+                  onFieldSubmitted: (value) async {
+                    String text = textController.text.trim();
+
+                    if (text.isNotEmpty) {
+                      TodayItem todayItem =
+                          TodayItem(text: text, dateCreated: DateTime.now());
+                      await TodayItemRepository().addTodayItem(todayItem);
+                    }
+                    Navigator.of(context).pop();
+                  },
                   decoration: const InputDecoration(
                     hintText: "You sure this is necessary...?",
                     contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
@@ -55,9 +65,14 @@ Future<void> showAddTodayItemDialog(BuildContext context) async {
               SizedBox(
                 width: textFieldWidth,
                 child: TextButton(
-                  onPressed: () {
-                    // TODO: Handle button press logic
-                    // ! Remeber you cant add blanck to dos
+                  onPressed: () async {
+                    String text = textController.text.trim();
+
+                    if (text.isNotEmpty) {
+                      TodayItem todayItem =
+                          TodayItem(text: text, dateCreated: DateTime.now());
+                      await TodayItemRepository().addTodayItem(todayItem);
+                    }
                     Navigator.of(context).pop();
                   },
                   style: TextButton.styleFrom(
