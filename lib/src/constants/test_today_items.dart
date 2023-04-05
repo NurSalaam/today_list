@@ -8,25 +8,22 @@ final kTodayItems = [
   TodayItem(
       text: "Read invest Cape Town Textiles", dateCreated: DateTime.now()),
   TodayItem(text: "Read NDP", dateCreated: DateTime.now()),
-  TodayItem(text: "Finish ToDay List App", dateCreated: DateTime.now()),
-  TodayItem(text: "Finish ToDay List App", dateCreated: DateTime.now()),
-  TodayItem(text: "Finish ToDay List App", dateCreated: DateTime.now()),
-  TodayItem(text: "Finish ToDay List App", dateCreated: DateTime.now()),
-  TodayItem(text: "Recite Juz 10", dateCreated: DateTime.now()),
-  TodayItem(text: "Read Iliad", dateCreated: DateTime.now()),
   TodayItem(
-      text: "Read invest Cape Town Textiles", dateCreated: DateTime.now()),
-  TodayItem(text: "Read NDP", dateCreated: DateTime.now()),
-  TodayItem(text: "Finish ToDay List App", dateCreated: DateTime.now()),
-  TodayItem(text: "Finish ToDay List App", dateCreated: DateTime.now()),
-  TodayItem(text: "Finish ToDay List App", dateCreated: DateTime.now()),
-  TodayItem(text: "Finish ToDay List App", dateCreated: DateTime.now()),
-  TodayItem(text: "Recite Juz 10", dateCreated: DateTime.now()),
-  TodayItem(text: "Read Iliad", dateCreated: DateTime.now()),
+      text: "Finish ToDay List App",
+      dateCreated: DateTime.now(),
+      isCompleted: true),
   TodayItem(
-      text: "Read invest Cape Town Textiles", dateCreated: DateTime.now()),
-  TodayItem(text: "Read NDP", dateCreated: DateTime.now()),
-  TodayItem(text: "Finish ToDay List App", dateCreated: DateTime.now()),
-  TodayItem(text: "Finish ToDay List App", dateCreated: DateTime.now()),
-  TodayItem(text: "Finish ToDay List App", dateCreated: DateTime.now()),
+      text: "Finish ToDay List App",
+      dateCreated: DateTime.now(),
+      isCompleted: true),
+  TodayItem(
+      text: "Finish ToDay List App",
+      dateCreated: DateTime.now(),
+      isCompleted: true),
+  TodayItem(
+      text: "Finish ToDay List App",
+      dateCreated: DateTime.now(),
+      isCompleted: true),
+  TodayItem(
+      text: "Recite Juz 10", dateCreated: DateTime.now(), isCompleted: true),
 ];

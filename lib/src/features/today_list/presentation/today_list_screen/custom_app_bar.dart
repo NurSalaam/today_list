@@ -27,7 +27,7 @@ class CustomAppBar extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Today',
+                    'ToDay',
                     style: TextStyle(
                       fontSize: 24 - (8 * percentageCollapsed),
                       fontWeight: FontWeight.bold,

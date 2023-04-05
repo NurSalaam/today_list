@@ -12,11 +12,11 @@ class FakeTodayItemRepository {
   }
 
   List<TodayItem> getCompleteItems() {
-    return _todayItems;
+    return _todayItems.where((item) => item.isCompleted).toList();
   }
 
   List<TodayItem> getIncompleteItems() {
-    return _todayItems;
+    return _todayItems.where((item) => !item.isCompleted).toList();
   }
 
   Future<List<TodayItem>> fetchTodayItems() {
