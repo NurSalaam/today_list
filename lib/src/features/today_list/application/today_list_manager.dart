@@ -75,6 +75,9 @@ class TodayListManager {
       await prefs.setInt(
           'firstOpenDate', DateTime.now().millisecondsSinceEpoch);
     }
+
+    // Add the monthly item immediately after saving the first open date
+    _addMonthlyItem(DateTime.now());
   }
 
   void _addMonthlyItem(DateTime now) async {
