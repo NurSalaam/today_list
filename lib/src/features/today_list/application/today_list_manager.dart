@@ -83,7 +83,7 @@ class TodayListManager {
 
   void _addMonthlyItem(DateTime now) async {
     String monthlyItemText =
-        "Buy my dev a coffee ☕️✌️ | https://www.buymeacoffee.com/nusa"; // Customize the text
+        "Buy my dev a coffee ☕️✌️😁 | https://www.buymeacoffee.com/nusa"; // Customize the text
     TodayItem monthlyItem = TodayItem(text: monthlyItemText, dateCreated: now);
     await TodayItemRepository().addTodayItem(monthlyItem);
   }

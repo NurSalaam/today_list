@@ -62,31 +62,6 @@ Future<void> showAddTodayItemDialog(BuildContext context) async {
                 ),
               ),
               const SizedBox(height: 16),
-              SizedBox(
-                width: textFieldWidth,
-                child: TextButton(
-                  onPressed: () async {
-                    String text = textController.text.trim();
-
-                    if (text.isNotEmpty) {
-                      TodayItem todayItem =
-                          TodayItem(text: text, dateCreated: DateTime.now());
-                      await TodayItemRepository().addTodayItem(todayItem);
-                    }
-                    Navigator.of(context).pop();
-                  },
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 12, horizontal: 24),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                  child: const Text("Add ToDay"),
-                ),
-              ),
             ],
           ),
         ),

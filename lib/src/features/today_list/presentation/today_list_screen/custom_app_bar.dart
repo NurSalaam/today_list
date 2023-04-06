@@ -7,6 +7,9 @@ class CustomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode =
+        MediaQuery.of(context).platformBrightness == Brightness.dark;
+
     final String formattedDate =
         '${currentDate.year}-${currentDate.month.toString().padLeft(2, '0')}-${currentDate.day.toString().padLeft(2, '0')}';
     return SliverAppBar(
@@ -16,7 +19,7 @@ class CustomAppBar extends StatelessWidget {
           double percentageCollapsed = 1 -
               ((constraints.maxHeight - kToolbarHeight) /
                   (100 - kToolbarHeight));
-          Color backgroundColor = Colors.black;
+          Color backgroundColor = isDarkMode ? Colors.black : Colors.white;
           return Container(
             color: backgroundColor,
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -30,7 +33,7 @@ class CustomAppBar extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 24 - (8 * percentageCollapsed),
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: isDarkMode ? Colors.white : Colors.black,
                     ),
                   ),
                   Text(
@@ -38,7 +41,7 @@ class CustomAppBar extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 16 - (8 * percentageCollapsed),
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: isDarkMode ? Colors.white : Colors.black,
                     ),
                   ),
                 ],

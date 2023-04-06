@@ -58,26 +58,6 @@ Future<void> showEditTodayItemDialog(
                 ),
               ),
               const SizedBox(height: 16),
-              SizedBox(
-                width: textFieldWidth,
-                child: TextButton(
-                  onPressed: () async {
-                    String text = textController.text.trim();
-
-                    editItem(context, text, todayItem);
-                  },
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 12, horizontal: 24),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                  ),
-                  child: const Text("Edit ToDay"),
-                ),
-              ),
             ],
           ),
         ),
