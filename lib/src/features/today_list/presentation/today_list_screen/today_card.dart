@@ -39,7 +39,7 @@ class TodayCard extends StatelessWidget {
               },
             ),
             Expanded(
-              child: SelectableText(
+              child: Text(
                 todayItem.text,
               ),
             ),

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:today_list/src/features/today_list/data/today_item_repository.dart';
 
@@ -36,9 +38,8 @@ class TodayListManager {
 
   void _setupPeriodicCheck() {
     // Run the check every minute
-    Future.delayed(const Duration(minutes: 1), () {
+    Timer.periodic(const Duration(minutes: 1), (Timer timer) {
       _periodicCheck();
-      _setupPeriodicCheck();
     });
   }
 
@@ -59,7 +60,7 @@ class TodayListManager {
       int dayOfMonth = firstOpenDate.day > 28 ? 1 : firstOpenDate.day;
 
       // Add the monthly item based on the user's first open date
-      if (now.day == dayOfMonth) {
+      if (now.day == dayOfMonth && now.month != firstOpenDate.month) {
         _addMonthlyItem(now);
       }
     }
@@ -74,10 +75,10 @@ class TodayListManager {
     if (!prefs.containsKey('firstOpenDate')) {
       await prefs.setInt(
           'firstOpenDate', DateTime.now().millisecondsSinceEpoch);
-    }
 
-    // Add the monthly item immediately after saving the first open date
-    _addMonthlyItem(DateTime.now());
+      // Add the monthly item immediately after saving the first open date
+      _addMonthlyItem(DateTime.now());
+    }
   }
 
   void _addMonthlyItem(DateTime now) async {
