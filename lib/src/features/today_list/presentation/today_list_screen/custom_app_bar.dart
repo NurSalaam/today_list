@@ -16,8 +16,7 @@ class CustomAppBar extends StatelessWidget {
           double percentageCollapsed = 1 -
               ((constraints.maxHeight - kToolbarHeight) /
                   (100 - kToolbarHeight));
-          Color backgroundColor =
-              Color.lerp(Colors.black, Colors.white, percentageCollapsed)!;
+          Color backgroundColor = Colors.black;
           return Container(
             color: backgroundColor,
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -31,8 +30,7 @@ class CustomAppBar extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 24 - (8 * percentageCollapsed),
                       fontWeight: FontWeight.bold,
-                      color: Color.lerp(
-                          Colors.white, Colors.black, percentageCollapsed)!,
+                      color: Colors.white,
                     ),
                   ),
                   Text(
@@ -40,8 +38,7 @@ class CustomAppBar extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 16 - (8 * percentageCollapsed),
                       fontWeight: FontWeight.bold,
-                      color: Color.lerp(
-                          Colors.white, Colors.black, percentageCollapsed)!,
+                      color: Colors.white,
                     ),
                   ),
                 ],

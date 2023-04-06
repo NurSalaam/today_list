@@ -10,6 +10,13 @@ class TodayCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode =
+        MediaQuery.of(context).platformBrightness == Brightness.dark;
+    Color greenColor = isDarkMode
+        ? Colors.green.withOpacity(0.35)
+        : Colors.green.withOpacity(0.1);
+    Color checkboxColor = isDarkMode ? Colors.white : Colors.black;
+    Color checkColor = isDarkMode ? Colors.black : Colors.white;
     return GestureDetector(
       onTap: () {
         if (!todayItem.isCompleted) {
@@ -19,7 +26,7 @@ class TodayCard extends StatelessWidget {
       child: Container(
         decoration: todayItem.isCompleted
             ? BoxDecoration(
-                color: Colors.green.withOpacity(0.1),
+                color: greenColor,
                 borderRadius: BorderRadius.circular(8),
               )
             : null,
@@ -30,6 +37,13 @@ class TodayCard extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(4),
               ),
+              checkColor: checkColor,
+              fillColor: MaterialStateProperty.resolveWith((states) {
+                if (states.contains(MaterialState.selected)) {
+                  return checkboxColor;
+                }
+                return isDarkMode ? Colors.white54 : Colors.black54;
+              }),
               value: todayItem.isCompleted,
               onChanged: (bool? value) {
                 bool isComplete = !todayItem.isCompleted;
