@@ -30,7 +30,7 @@ class CustomAppBar extends StatelessWidget {
                     'ToDay',
                     style: TextStyle(
                       fontSize: 24 - (8 * percentageCollapsed),
-                      fontWeight: FontWeight.normal,
+                      fontWeight: FontWeight.bold,
                       color: Color.lerp(
                           Colors.white, Colors.black, percentageCollapsed)!,
                     ),
@@ -39,7 +39,7 @@ class CustomAppBar extends StatelessWidget {
                     formattedDate,
                     style: TextStyle(
                       fontSize: 16 - (8 * percentageCollapsed),
-                      fontWeight: FontWeight.normal,
+                      fontWeight: FontWeight.bold,
                       color: Color.lerp(
                           Colors.white, Colors.black, percentageCollapsed)!,
                     ),

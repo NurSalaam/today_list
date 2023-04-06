@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
           ),
           titleTextStyle: TextStyle(
             fontSize: 20,
-            fontWeight: FontWeight.normal,
+            fontWeight: FontWeight.bold,
             color: Colors.black,
             fontFamily: 'SourceCodePro',
           ),
