@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:today_list/src/features/today_list/data/today_item_repository.dart';
 import 'package:today_list/src/features/today_list/domain/today_item.dart';
 
@@ -16,6 +17,7 @@ class TodayCard extends StatelessWidget {
         : Colors.green.withOpacity(0.1);
     Color checkboxColor = isDarkMode ? Colors.white : Colors.black;
     Color checkColor = isDarkMode ? Colors.black : Colors.white;
+    Color dateTextColor = isDarkMode ? Colors.white : Colors.grey;
     return Container(
       decoration: todayItem.isCompleted
           ? BoxDecoration(
@@ -49,6 +51,12 @@ class TodayCard extends StatelessWidget {
             child: Text(
               todayItem.text,
             ),
+          ),
+          const Spacer(), // Add this line
+          Text(
+            DateFormat('HH:mm')
+                .format(todayItem.dateCreated), // Format the date as desired
+            style: TextStyle(color: dateTextColor), // Style the date text
           ),
         ],
       ),
