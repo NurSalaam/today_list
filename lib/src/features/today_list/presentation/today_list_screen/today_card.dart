@@ -3,6 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:today_list/src/features/today_list/data/today_item_repository.dart';
 import 'package:today_list/src/features/today_list/domain/today_item.dart';
 
+import '../../../../constants/app_sizes.dart';
+
 class TodayCard extends StatelessWidget {
   final TodayItem todayItem;
 
@@ -52,7 +54,7 @@ class TodayCard extends StatelessWidget {
               todayItem.text,
             ),
           ),
-          const Spacer(), // Add this line
+          gapW4,
           Text(
             DateFormat('HH:mm')
                 .format(todayItem.dateCreated), // Format the date as desired

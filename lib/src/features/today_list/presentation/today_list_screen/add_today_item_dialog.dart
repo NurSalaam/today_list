@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:today_list/src/constants/app_sizes.dart';
 
 import '../../data/today_item_repository.dart';
 import '../../domain/today_item.dart';
@@ -61,7 +62,7 @@ Future<void> showAddTodayItemDialog(BuildContext context) async {
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
+              gapW16,
             ],
           ),
         ),
