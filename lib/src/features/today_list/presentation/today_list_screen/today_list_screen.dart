@@ -23,77 +23,8 @@ class TodayListScreen extends StatelessWidget {
           final List<TodayItem> completedList =
               snapshot.data?.where((item) => item.isCompleted).toList() ?? [];
 
-          return Scaffold(
-            body: CustomScrollView(
-              slivers: [
-                CustomAppBar(),
-                SliverList(
-                  delegate: SliverChildListDelegate([
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16, top: 16),
-                      child: Text(
-                        incompleteList.isNotEmpty
-                            ? 'Do'
-                            : 'Absolutely wonderful...',
-                        style: Theme.of(context).textTheme.titleSmall,
-                      ),
-                    ),
-                  ]),
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  sliver: SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        if (index.isEven) {
-                          return TodayCard(
-                              todayItem: incompleteList[index ~/ 2]);
-                        }
-                        return const Divider(height: 1, thickness: 1);
-                      },
-                      childCount: incompleteList.length * 2 - 1,
-                    ),
-                  ),
-                ),
-                SliverList(
-                  delegate: SliverChildListDelegate([
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16, top: 16),
-                      child: Text(
-                        completedList.isEmpty ? 'Let\'s get going' : 'Done',
-                        style: Theme.of(context).textTheme.titleSmall,
-                      ),
-                    ),
-                  ]),
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  sliver: SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        if (index.isEven) {
-                          return TodayCard(
-                            todayItem: completedList[index ~/ 2],
-                          );
-                        }
-                        return const Divider(height: 1, thickness: 1);
-                      },
-                      childCount: completedList.length * 2 - 1,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            floatingActionButton: FloatingActionButton.extended(
-              onPressed: () {
-                showAddTodayItemDialog(context);
-              },
-              label: const Icon(Icons.add),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-            ),
-          );
+          return TodayListScreenContent(
+              incompleteList: incompleteList, completedList: completedList);
         } else {
           return const Scaffold(
             body: Center(
@@ -102,6 +33,89 @@ class TodayListScreen extends StatelessWidget {
           );
         }
       },
+    );
+  }
+}
+
+class TodayListScreenContent extends StatelessWidget {
+  const TodayListScreenContent({
+    super.key,
+    required this.incompleteList,
+    required this.completedList,
+  });
+
+  final List<TodayItem> incompleteList;
+  final List<TodayItem> completedList;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: [
+          CustomAppBar(),
+          SliverList(
+            delegate: SliverChildListDelegate([
+              Padding(
+                padding: const EdgeInsets.only(left: 16, top: 16),
+                child: Text(
+                  incompleteList.isNotEmpty ? 'Do' : 'Absolutely wonderful...',
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+              ),
+            ]),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  if (index.isEven) {
+                    return TodayCard(todayItem: incompleteList[index ~/ 2]);
+                  }
+                  return const Divider(height: 1, thickness: 1);
+                },
+                childCount: incompleteList.length * 2 - 1,
+              ),
+            ),
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate([
+              Padding(
+                padding: const EdgeInsets.only(left: 16, top: 16),
+                child: Text(
+                  completedList.isEmpty ? 'Let\'s get going' : 'Done',
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+              ),
+            ]),
+          ),
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  if (index.isEven) {
+                    return TodayCard(
+                      todayItem: completedList[index ~/ 2],
+                    );
+                  }
+                  return const Divider(height: 1, thickness: 1);
+                },
+                childCount: completedList.length * 2 - 1,
+              ),
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          showAddTodayItemDialog(context);
+        },
+        label: const Icon(Icons.add),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+      ),
     );
   }
 }

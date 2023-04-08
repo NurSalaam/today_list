@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:intl/intl.dart';
 import 'package:today_list/src/features/today_list/data/today_item_repository.dart';
 import 'package:today_list/src/features/today_list/domain/today_item.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../constants/app_sizes.dart';
 
@@ -50,11 +52,23 @@ class TodayCard extends StatelessWidget {
             },
           ),
           Expanded(
-            child: Text(
-              todayItem.text,
+            child: Linkify(
+              text: todayItem.text,
+              onOpen: (link) async {
+                Uri uri = Uri.parse(link.url);
+                if (await canLaunchUrl(uri)) {
+                  await launchUrl(uri);
+                } else {
+                  return;
+                }
+              },
+              options: const LinkifyOptions(humanize: false),
+              style: TextStyle(
+                color: isDarkMode ? Colors.white : Colors.black,
+              ),
             ),
           ),
-          gapW4,
+          gapW2,
           Text(
             DateFormat('HH:mm')
                 .format(todayItem.dateCreated), // Format the date as desired
