@@ -38,15 +38,14 @@ class TodayListManager {
 
   void _setupPeriodicCheck() {
     // Run the check every minute
-    Timer.periodic(const Duration(seconds: 10), (Timer timer) async {
+    Timer.periodic(const Duration(minutes: 1), (Timer timer) async {
       await _periodicCheck();
     });
   }
 
   Future<void> _periodicCheck() async {
     DateTime now = DateTime.now();
-    if (now.minute != _lastCheckedDate.minute ||
-        now.day != _lastCheckedDate.day ||
+    if (now.day != _lastCheckedDate.day ||
         now.month != _lastCheckedDate.month ||
         now.year != _lastCheckedDate.year) {
       await _clearTodays();
